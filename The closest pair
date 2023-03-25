@@ -1,54 +1,43 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <math.h>
 
-struct Employee{
-
-    char name[20];
-    char surname[20];
-    char title[20];
-    int salary, year;
-
+struct Point3D {
+    int x, y, z;
 };
 
+int distance(int, int, int, int, int, int);
 
-int main(){
+int main() {
+    struct Point3D arr[5];
+    int dist;
+    float  min = -1;
+    int index1, index2;
 
-    struct Employee employee[3];
-    float  new[3];
-    
-    printf("Enter 3 Employees Details\n");    
-
-    for (int i = 0; i < 3; i++){
-        printf("Employee %d:-\n", i+1);
-
-        printf("Name: ");
-        fgets(employee[i].name, 20, stdin);
-        employee[i].name[strcspn(employee[i].name, "\n")] = '\0';
-
-        printf("Surname: ");
-        fgets(employee[i].surname, 20, stdin);
-        employee[i].surname[strcspn(employee[i].surname, "\n")] = '\0';
-
-        printf("Title: ");
-        fgets(employee[i].title, 20, stdin);
-        employee[i].title[strcspn(employee[i].title, "\n")] = '\0';
-
-        printf("Salary: ");
-        scanf("%d", &employee[i].salary);
-
-        printf("Year of Service: ");
-        scanf("%d", &employee[i].year);
-
-        getchar();
+    for (int i = 0; i < 5; i++) {
+        printf("Enter %d. Point (x,y,z) :", i + 1);
+        scanf("%d%d%d", &arr[i].x, &arr[i].y, &arr[i].z);
     }
 
-    for (int j = 0; j < 3; j++){
-        new[j] = employee[j].salary + (employee[j].salary * (employee[j].year* 1.0 /100));
+    for (int a = 0; a < 5; a++) {
+        for (int b = a + 1; b < 5; b++) {
+            dist = distance(arr[a].x, arr[a].y, arr[a].z,
+                            arr[b].x, arr[b].y, arr[b].z);
+
+            if (min == -1 || dist < min) {
+                min = dist;
+                index1 = a;
+                index2 = b;
+            }
+        }
     }
     
-    printf("3 Employees Details with Raise\n");
+    printf("Closest points are Point-%d and Point-%d Distance between them = %.3f\n",
+           index1 + 1, index2 + 1, min);
 
-    for (int a = 0; a < 3; a++)
-        printf("Name: %s, Surname: %s, New Salary: %.0f\n", employee[a].name, employee[a].surname, new[a]);
+    return 0;
+}
+
+int distance(int a, int b, int c, int x, int y, int z) {
+    return sqrt(pow(a - x, 2) + pow(b - y, 2) + pow(c - z, 2));
 }
